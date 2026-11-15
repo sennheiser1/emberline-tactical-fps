@@ -148,7 +148,8 @@ export function createBots(scene, world, rng, hooks) {
 
   function pickTarget(bot, ctx) {
     const foes = [];
-    if (ctx.playerAlive) foes.push({ kind: 'player', pos: ctx.playerPos });
+    // Only attackers hunt the player; defenders hunt attackers, never their own side.
+    if (ctx.playerAlive && bot.team === 'atk') foes.push({ kind: 'player', pos: ctx.playerPos });
     for (const other of bots) {
       if (other.alive && other.team !== bot.team) foes.push({ kind: 'bot', bot: other, pos: other.group.position });
     }

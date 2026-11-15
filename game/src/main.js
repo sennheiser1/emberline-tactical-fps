@@ -158,6 +158,7 @@ function resetRound(round) {
 }
 
 function damagePlayer(amount, bot, head) {
+  if (shot) return; // staged captures keep the player standing
   if (!match.state.alive) return;
   const died = match.damage(Math.round(amount));
   hud.damageFlash();
@@ -383,8 +384,14 @@ function settle(steps) {
   for (let index = 0; index < steps; index += 1) step(FIXED_STEP);
 }
 
+const SHOT_FILES = { start: '1-start.jpg', play: '2-play.jpg', buy: '3-buy.jpg', end: '4-end.jpg' };
+
 function runShot(name) {
   started = true;
+  renderer.setPixelRatio(1);
+  renderer.setSize(1280, 720);
+  camera.aspect = 1280 / 720;
+  camera.updateProjectionMatrix();
   hud.hideOverlay();
   body.pitch = 0;
   body.yaw = 0;
@@ -440,6 +447,17 @@ function paintTwiceThenReady() {
     renderer.render(scene, camera);
     painted += 1;
     if (painted === 2) {
+      // Capture the rendered frame for download: the same pixels, unedited.
+      renderer.domElement.toBlob((blob) => {
+        if (!blob) return;
+        const link = document.createElement('a');
+        link.id = 'shot-download';
+        link.href = URL.createObjectURL(blob);
+        link.download = SHOT_FILES[shot] || 'shot.jpg';
+        link.textContent = 'Download screenshot';
+        link.style.cssText = 'position:fixed;left:12px;bottom:12px;z-index:9;background:#000;color:#fff;padding:8px 12px;font:14px sans-serif;';
+        document.body.appendChild(link);
+      }, 'image/jpeg', 0.82);
       window.__shotReady = true;
       frozen = true;
     }
