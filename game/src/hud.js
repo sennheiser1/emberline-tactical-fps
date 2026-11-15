@@ -51,8 +51,10 @@ export function createHud() {
   return {
     setAmmo(mag, reserve) {
       set('mag', ammoMag, mag);
-      set('reserve', ammoReserve, reserve, '');
-      ammoReserve.textContent = `/ ${reserve}`;
+      if (last.reserve !== reserve) {
+        last.reserve = reserve;
+        ammoReserve.textContent = `/ ${reserve}`;
+      }
       el('ammo').classList.toggle('empty', mag === 0);
     },
     setWeapon(name) { set('weapon', weaponName, name); },

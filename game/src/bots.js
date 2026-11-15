@@ -29,6 +29,7 @@ export function createBots(scene, world, rng, hooks) {
   const tmpA = new THREE.Vector3();
   const tmpB = new THREE.Vector3();
   const tmpC = new THREE.Vector3();
+  const tmpD = new THREE.Vector3();
   const probe = new THREE.Box3();
   const bots = [];
   const hitMeshes = [];
@@ -114,7 +115,7 @@ export function createBots(scene, world, rng, hooks) {
     const dist = eyeOf(bot).distanceTo(tmpA);
     const hit = raycaster.intersectObjects(world.shootables, false)[0];
     if (hit && hit.distance < dist - 0.4) return;
-    const t = Math.max(0, tmpA.clone().sub(eyeOf(bot)).dot(tmpC));
+    const t = Math.max(0, tmpD.copy(tmpA).sub(eyeOf(bot)).dot(tmpC));
     tmpB.copy(eyeOf(bot)).addScaledVector(tmpC, t);
     const chestMiss = Math.hypot(tmpB.x - tmpA.x, tmpB.y - tmpA.y, tmpB.z - tmpA.z);
     const headMiss = Math.hypot(tmpB.x - tmpA.x, tmpB.y - HEAD, tmpB.z - tmpA.z);
@@ -234,7 +235,7 @@ export function createBots(scene, world, rng, hooks) {
         if (frozen && bot.alive) continue;
         stepBot(bot, dt, ctx);
         bot.group.rotation.y = bot.yaw;
-        const swinging = bot.alive && bot.routeIndex < bot.route.length;
+        const swinging = bot.alive && !frozen && bot.routeIndex < bot.route.length;
         bot.legL.rotation.x = swinging ? Math.sin(bot.walk) * 0.5 : 0;
         bot.legR.rotation.x = swinging ? -Math.sin(bot.walk) * 0.5 : 0;
       }

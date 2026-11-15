@@ -95,8 +95,8 @@ export function createWorld(scene) {
   // Spawn cover so neither spawn is a shooting gallery.
   box(2.4, 1.1, 1.2, -4, 0.55, 13.5, 'hairline');
   box(2.4, 1.1, 1.2, 4, 0.55, 13.5, 'hairline');
-  box(2.4, 1.1, 1.2, -4, 0.55, -13.5, 'hairline');
-  box(2.4, 1.1, 1.2, 4, 0.55, -13.5, 'hairline');
+  box(2.4, 1.1, 1.2, -4, 0.55, -14.5, 'hairline');
+  box(2.4, 1.1, 1.2, 4, 0.55, -14.5, 'hairline');
 
   const sky = new THREE.HemisphereLight(new THREE.Color(PALETTE.surface), new THREE.Color(PALETTE.canvas), 1.15);
   scene.add(sky);
