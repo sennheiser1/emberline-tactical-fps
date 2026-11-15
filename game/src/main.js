@@ -447,8 +447,15 @@ function paintTwiceThenReady() {
     renderer.render(scene, camera);
     painted += 1;
     if (painted === 2) {
-      // Capture the rendered frame for download: the same pixels, unedited.
-      renderer.domElement.toBlob((blob) => {
+      // Capture the rendered frame plus the HUD, composited by the game's own
+      // code in this same frame: the canvas alone cannot carry the DOM HUD.
+      const frame = document.createElement('canvas');
+      frame.width = 1280;
+      frame.height = 720;
+      const fctx = frame.getContext('2d');
+      fctx.drawImage(renderer.domElement, 0, 0, 1280, 720);
+      hud.drawShot(fctx, 1280, 720, shot);
+      frame.toBlob((blob) => {
         if (!blob) return;
         const link = document.createElement('a');
         link.id = 'shot-download';

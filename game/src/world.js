@@ -98,9 +98,9 @@ export function createWorld(scene) {
   box(2.4, 1.1, 1.2, -4, 0.55, -14.5, 'hairline');
   box(2.4, 1.1, 1.2, 4, 0.55, -14.5, 'hairline');
 
-  const sky = new THREE.HemisphereLight(new THREE.Color(PALETTE.surface), new THREE.Color(PALETTE.canvas), 1.15);
+  const sky = new THREE.HemisphereLight(new THREE.Color(PALETTE.surface), new THREE.Color(PALETTE.canvas), 1.9);
   scene.add(sky);
-  const key = new THREE.DirectionalLight(new THREE.Color(PALETTE.ink), 2.1);
+  const key = new THREE.DirectionalLight(new THREE.Color(PALETTE.ink), 3.2);
   key.position.set(14, 20, 10);
   key.target.position.set(0, 0, -2);
   key.castShadow = true;
@@ -112,7 +112,7 @@ export function createWorld(scene) {
   key.shadow.camera.far = 60;
   key.shadow.bias = -0.0006;
   scene.add(key, key.target);
-  const fill = new THREE.DirectionalLight(new THREE.Color(PALETTE.muted), 0.55);
+  const fill = new THREE.DirectionalLight(new THREE.Color(PALETTE.muted), 1.0);
   fill.position.set(-12, 12, 14);
   scene.add(fill);
 
